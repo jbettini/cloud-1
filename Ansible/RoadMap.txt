@@ -1,0 +1,66 @@
+
+
+
+
+
+
+
+
+-   Your site can restart automatically if the server is rebooted.                                          -> Mettre un script de demararage qui demarre direct 
+-   In case of reboot all the data of the site are persisted                                                -> Volumes
+
+-   Public access to your server must be limited and secure (for example, 
+    it is not possible to connect directly to your database from the internet).                             ->Close les routes       
+
+
+
+
+
+-   The services will be the different components of a WordPress to install by yourself. 
+    For example Phpmyadmin, MySQL, ...
+-   The script must be able to function in an automated way with for only assumption 
+    an ubuntu 20.04 LTS like OS of the target instance running an SSH daemon and with Python installed.
+-   Your applications will run in separate containers that can communicate with each other                 
+-   You must have a docker-compose.yml.                                                                     
+-   You will need to ensure that your SQL database works with WordPress and PHP                             -> Default Settings
+
+
+
+-   You will need to make sure that, depending on the URL 
+        requested, your server redirects to the correct site.
+-   Your server should be able, when possible, to use TLS.                                                  -> Besoin de reflexion              
+
+
+
+
+
+
+In Ansible
+• Your site can restart automatically if the server is rebooted.
+• It is possible to deploy your site on several servers in parallel.
+• Your server should be able, when possible, to use TLS.
+• You will need to make sure that, depending on the URL requested, your server redirects to the correct site.
+
+
+
+In Docker
+• In case of reboot all the data of the site are persisted (images, user accounts, articles, ...).
+• Public access to your server must be limited and secure (for example, it is not possible to connect directly to your database from the internet).
+• You must have a docker-compose.yml.
+• Your applications will run in separate containers that can communicate with each other (1 process = 1 container)
+• You will need to ensure that your SQL database works with WordPress and PHP-MyAdmin.
+• The services will be the different components of a WordPress to install by yourself. For example Phpmyadmin, MySQL, ...
+
+
+Out of Project
+• The script must be able to function in an automated way with for only assumption an ubuntu 20.04 LTS like 
+OS of the target instance running an SSH daemon and with Python installed.
+
+
+
+
+
+
+
+
+
