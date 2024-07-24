@@ -59,8 +59,7 @@ OS of the target instance running an SSH daemon and with Python installed.
 
 
 
+dependecies :
 
-
-
-
-
+Docker
+Curl

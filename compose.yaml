@@ -1,4 +1,4 @@
 services:
   cloud1:
     build: .
-    volumes: [.:/DataSource]
+    volumes: [.:/root/DataSource]
