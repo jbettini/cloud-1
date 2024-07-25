@@ -18,7 +18,8 @@ RUN pipx install --include-deps ansible && \
 
 COPY startup.sh /root/startup.sh
 COPY .ssh /root/.ssh/
-COPY .gitconfig /root/.gitconfig
+COPY .ssh/.gitconfig /root/.gitconfig
+COPY .ansible.cfg /root/.ansible.cfg
 
 RUN chmod +rwx /root/startup.sh
 
