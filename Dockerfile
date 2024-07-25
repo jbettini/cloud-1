@@ -16,6 +16,12 @@ RUN pipx install --include-deps ansible && \
     pipx upgrade --include-injected ansible && \
     pipx inject --include-apps ansible argcomplete
 
-WORKDIR /root
+COPY startup.sh /root/startup.sh
+COPY .ssh /root/.ssh/
+COPY .gitconfig /root/.gitconfig
 
-ENTRYPOINT ["fish", "cd /root/DataSource"]
+RUN chmod +rwx /root/startup.sh
+
+WORKDIR /root/DataSource
+
+ENTRYPOINT ["bash", "/root/startup.sh"]

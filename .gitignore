@@ -1,4 +1,4 @@
 .ssh
 .vscode
 .dockerignore
-.gitConfig
+.gitconfig
