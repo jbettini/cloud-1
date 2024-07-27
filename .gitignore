@@ -2,7 +2,4 @@
 .vscode
 .dockerignore
 .gitconfig
-env
-*.env
 WebApp/data
-WebApp/env
