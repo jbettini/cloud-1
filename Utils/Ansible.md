@@ -24,3 +24,15 @@ Docker
 
 
 wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+
+
+
+
+Peut etre devoir specifier le chemin de python a ansible
+
+installer python au cas avec le module raw et ensuite installer :
+Sudo 
+Curl
+Docker
+
+avec le module apt

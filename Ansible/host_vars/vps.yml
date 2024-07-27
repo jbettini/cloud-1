@@ -1,0 +1,3 @@
+var1: "Container"
+ansible_host: 51.158.107.187 
+ansible_user: root
