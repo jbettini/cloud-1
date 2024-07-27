@@ -1,0 +1,6 @@
+- name: cloud1
+  hosts: vps
+  remote_user: root
+  tasks:
+  - name: ipy
+  

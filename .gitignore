@@ -2,3 +2,5 @@
 .vscode
 .dockerignore
 .gitconfig
+env
+*.env

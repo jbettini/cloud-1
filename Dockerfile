@@ -8,7 +8,8 @@ RUN apt-get update && apt-get install -y \
         fish \
         net-tools \
         inetutils-ping \
-        pipx
+        pipx \
+        tree
 
 ENV PATH="/root/.local/bin:${PATH}"
 
@@ -21,9 +22,4 @@ COPY .ssh/.gitconfig /root/.gitconfig
 
 WORKDIR /root/DataSource
 
-RUN apt-get update && apt-get install -y \
-    tree
-
 ENTRYPOINT ["fish"]
-
-# ENTRYPOINT ["bash", "/root/startup.sh"]
