@@ -4,5 +4,5 @@
 .gitconfig
 env
 *.env
-./Web-App/data
-./Web-App/env
+WebApp/data
+WebApp/env
