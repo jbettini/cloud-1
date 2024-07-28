@@ -68,7 +68,7 @@ services:
     volumes:
       - certbot-etc:/etc/letsencrypt
       - wordpress:/var/www/html
-    command: certonly --webroot --webroot-path=/var/www/html --email jbettini@cloud-one42project.duckdns.org --agree-tos --no-eff-email --staging -d cloud-one42project.duckdns.org -d www.cloud-one42project.duckdns.org
+    command: certonly --webroot --webroot-path=/var/www/html --email jbettini@cloud-one42.duckdns.org --agree-tos --no-eff-email --staging -d cloud-one42.duckdns.org -d www.cloud-one42.duckdns.org
 
 networks:
   cloud1:
