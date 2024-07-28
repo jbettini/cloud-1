@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   # Database
   mariadb:
@@ -69,8 +67,7 @@ services:
     volumes:
       - certbot-etc:/etc/letsencrypt
       - wordpress:/var/www/html
-  # Replace --staging by --prod when ssl need to be enabled
-    command: certonly --webroot --webroot-path=/var/www/html --email jbettini@cloud-one42.duckdns.org --agree-tos --no-eff-email --staging -d cloud-one42.duckdns.org -d www.cloud-one42.duckdns.org
+    command: certonly --webroot --webroot-path=/var/www/html --email jbettini@cloud-one42.duckdns.org --agree-tos --no-eff-email --prod -d cloud-one42.duckdns.org -d www.cloud-one42.duckdns.org
     networks:
       - cloud1
       

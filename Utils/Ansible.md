@@ -41,3 +41,10 @@ Copier/cree le tree docker, puis le lancer
 
 
 Peut etre devoir specifier le chemin de python a ansible
+
+
+
+Pour ssl d'abord lancer :
+docker compose up cerbot --build
+
+En utilisant nginx que avec le http
