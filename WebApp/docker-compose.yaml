@@ -73,7 +73,7 @@ services:
     command: certonly --webroot --webroot-path=/var/www/html --email jbettini@cloud-one42.duckdns.org --agree-tos --no-eff-email --staging -d cloud-one42.duckdns.org -d www.cloud-one42.duckdns.org
     networks:
       - cloud1
-
+      
 networks:
   cloud1:
     driver: bridge
