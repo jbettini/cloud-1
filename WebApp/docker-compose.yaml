@@ -33,13 +33,12 @@ services:
     restart: unless-stopped
     ports:
       - '8081:80'
-    volumes: 
-      - ./data/wp:/var/www/html
+    volumes:
+      - wordpress:/var/www/html
     env_file:
       - ./env/wp.env
     networks:
       - cloud1
-
   # Nginx
   webserver:
     depends_on:

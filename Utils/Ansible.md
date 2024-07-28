@@ -44,7 +44,8 @@ Peut etre devoir specifier le chemin de python a ansible
 
 
 
-Pour ssl d'abord lancer :
+Pour ssl d'abord, copier http.conf dans le fichier default.conf de nginx et lancer :
 docker compose up cerbot --build
 
-En utilisant nginx que avec le http
+Une fois les certificat generer copier https.conf dans le fichier default.conf de nginx et lancer :
+docker compose up -d --build
