@@ -34,8 +34,9 @@ services:
     image: wordpress:latest
     restart: unless-stopped
     ports:
-      - '8000:80'
-    volumes: [./data/wp:/var/www/html]
+      - '8081:80'
+    volumes: 
+      - ./data/wp:/var/www/html
     env_file:
       - ./env/wp.env
     networks:
@@ -46,7 +47,7 @@ services:
     depends_on:
       - wordpress
       - phpmyadmin
-    image: nginx:1.15.12-alpine
+    image: nginx:latest
     container_name: webserver
     restart: unless-stopped
     ports:
@@ -59,21 +60,23 @@ services:
     networks:
       - cloud1
 
-  # LetsEncrypt
-  certbot:
-    depends_on:
-      - webserver
-    image: certbot/certbot
-    container_name: certbot
-    volumes:
-      - certbot-etc:/etc/letsencrypt
-      - wordpress:/var/www/html
-    command: certonly --webroot --webroot-path=/var/www/html --email jbettini@cloud-one42.duckdns.org --agree-tos --no-eff-email --staging -d cloud-one42.duckdns.org -d www.cloud-one42.duckdns.org
+  # # LetsEncrypt
+  # certbot:
+  #   depends_on:
+  #     - webserver
+  #   image: certbot/certbot
+  #   container_name: certbot
+  #   volumes:
+  #     - certbot-etc:/etc/letsencrypt
+  #     - wordpress:/var/www/html
+  ## Replace --staging by --prod when ssl need to be enabled
+  #   command: certonly --webroot --webroot-path=/var/www/html --email jbettini@cloud-one42.duckdns.org \
+  #               --agree-tos --no-eff-email --staging -d cloud-one42.duckdns.org -d www.cloud-one42.duckdns.org
 
 networks:
   cloud1:
     driver: bridge
 volumes:
-  certbot-etc:
+  # certbot-etc:
   wordpress:
   dbdata:
