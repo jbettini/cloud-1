@@ -1,6 +1,7 @@
 version: '3'
 
 services:
+  # Database
   mariadb:
     image: mariadb:latest
     container_name: mariadb
@@ -13,14 +14,14 @@ services:
     networks:
       - cloud1
 
-  # phpmyadmin
+  # PHPMyAdmin
   phpmyadmin:
     depends_on:
       - mariadb
     image: phpmyadmin/phpmyadmin
     restart: unless-stopped
-    ports:
-      - '8080:80'
+    # ports:
+    #   - '8080:80'
     env_file:
       - ./env/php.env
     networks:
@@ -32,22 +33,25 @@ services:
       - mariadb
     image: wordpress:latest
     restart: unless-stopped
-    ports:
-      - '8000:80'
+    # ports:
+    #   - '8000:80'
     volumes: [./data/wp:/var/www/html]
     env_file:
       - ./env/wp.env
     networks:
       - cloud1
-  
+
+  # Nginx
   webserver:
     depends_on:
       - wordpress
+      - phpmyadmin
     image: nginx:1.15.12-alpine
     container_name: webserver
     restart: unless-stopped
     ports:
       - "80:80"
+      - "443:443"
     volumes:
       - wordpress:/var/www/html
       - ./nginx-conf:/etc/nginx/conf.d
@@ -55,6 +59,7 @@ services:
     networks:
       - cloud1
 
+  # LetsEncrypt
   certbot:
     depends_on:
       - webserver
