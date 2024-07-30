@@ -16,12 +16,15 @@ services:
   phpmyadmin:
     depends_on:
       - mariadb
-    image: phpmyadmin/phpmyadmin
+    image: phpmyadmin:5.2.1-apache
     restart: unless-stopped
     ports:
-      - '8080:80'
+      - "8080:80"
+    volumes:
+      - phpmyadmin:/var/www/html/phpmyadmin
     env_file:
       - ./env/php.env
+    # # command: sh -c "chown -R www-data:www-data /var/www/html"
     networks:
       - cloud1
 
@@ -29,14 +32,14 @@ services:
   wordpress:
     depends_on:
       - mariadb
-    image: wordpress:latest
+    image: wordpress:php8.1-fpm-alpine
     restart: unless-stopped
-    ports:
-      - '8081:80'
     volumes:
       - wordpress:/var/www/html
+      # - phpmyadmin:/var/www/html/phpmyadmin
     env_file:
       - ./env/wp.env
+      - ./env/php.env
     networks:
       - cloud1
   # Nginx
@@ -44,7 +47,7 @@ services:
     depends_on:
       - wordpress
       - phpmyadmin
-    image: nginx:latest
+    image: nginx:1.27.0-alpine
     container_name: webserver
     restart: unless-stopped
     ports:
@@ -54,6 +57,7 @@ services:
       - wordpress:/var/www/html
       - ./nginx-conf:/etc/nginx/conf.d
       - certbot-etc:/etc/letsencrypt
+      # - phpmyadmin:/var/www/html/phpmyadmin
     networks:
       - cloud1
 
@@ -66,6 +70,7 @@ services:
     volumes:
       - certbot-etc:/etc/letsencrypt
       - wordpress:/var/www/html
+    #command: certonly --webroot --webroot-path=/var/www/html --email jbettini@cloud-one42.duckdns.org --agree-tos --non-interactive --force-renewal -d cloud-one42.duckdns.org -d www.cloud-one42.duckdns.org 
     command: certonly --webroot --webroot-path=/var/www/html --email jbettini@cloud-one42.duckdns.org --agree-tos --no-eff-email -d cloud-one42.duckdns.org -d www.cloud-one42.duckdns.org
     networks:
       - cloud1
@@ -77,3 +82,5 @@ volumes:
   certbot-etc:
   wordpress:
   dbdata:
+  phpmyadmin:
+    driver: local
