@@ -1,0 +1,69 @@
+---
+# - name: Ensure pip is installed
+#   apt:
+#     name: python3-pip
+#     state: present
+#   become: yes
+
+# - name: Ensure Python Docker module
+#   pip:
+#     name: docker
+#     state: present
+#   become: yes
+
+# - name: Ensure Python Docker Compose
+#   pip:
+#     name: docker-compose
+#     state: present
+#   become: yes
+
+- name: Load HTTP conf
+  community.docker.docker_compose_v2:
+    project_src: "{{ app_dir }}"
+
+- name: Stop all services
+  community.docker.docker_compose_v2:
+    project_src: "{{ app_dir }}"
+    state: stopped
+  register: output
+
+- name: Copy HTTPS configuration
+  copy:
+    src: "{{ https_conf_file }}"
+    dest: "{{ nginx_conf_dir }}/default.conf"
+    remote_src: yes
+
+- name: Load HTTPS conf
+  community.docker.docker_compose_v2:
+    project_src: "{{ app_dir }}"
+
+
+    
+
+# - name: Stop all services
+#   docker_compose:
+#     project_src: flask
+#     build: no
+#     stopped: yes
+#   register: output
+
+# - name: Run `docker-compose up` again
+#   docker_compose:
+#     project_src: flask
+#     build: yes
+#   register: output
+
+# - name: Stop the application
+#   command: docker-compose down
+#   args:
+#     chdir: "{{ app_dir }}"
+
+# - name: Copy HTTPS configuration
+#   copy:
+#     src: "{{ https_conf_file }}"
+#     dest: "{{ nginx_conf_dir }}/default.conf"
+
+# - name: Redeploy application with HTTPS
+#   command: docker-compose up --build -d
+#   args:
+#     chdir: "{{ app_dir }}"

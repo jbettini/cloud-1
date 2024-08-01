@@ -1,0 +1,66 @@
+---
+- name: ensure WebApp exist
+  file:
+    path: /root/WebApp
+    state: directory
+    mode: '0755'
+  
+- name: ensure WebApp/env exist
+  file:
+    path: /root/WebApp/env
+    state: directory
+    mode: '0755'
+
+- name: ensure WebApp/confs exist
+  file:
+    path: /root/WebApp/confs
+    state: directory
+    mode: '0755'
+    
+- name: ensure WebApp/nginx-conf/ exist
+  file:
+    path: /root/WebApp/nginx-conf/
+    state: directory
+    mode: '0755'
+
+- name: template of db.env
+  template:
+    src: db.env.j2
+    dest: /root/WebApp/env/db.env
+    mode: '0644'
+
+- name: template of php.env
+  template:
+    src: php.env.j2
+    dest: /root/WebApp/env/php.env
+    mode: '0644'
+
+- name: template of wp.env
+  template:
+    src: wp.env.j2
+    dest: /root/WebApp/env/wp.env
+    mode: '0644'
+
+- name: template of default.conf
+  template:
+    src: default.conf.j2
+    dest: /root/WebApp/nginx-conf/default.conf
+    mode: '0644'
+
+- name: template of http.conf
+  template:
+    src: http.conf.j2
+    dest: /root/WebApp/confs/http.conf
+    mode: '0644'
+
+- name: template of https.conf
+  template:
+    src: https.conf.j2
+    dest: /root/WebApp/confs/https.conf
+    mode: '0644'
+
+- name: template of docker-compose
+  template:
+    src: docker-compose.yaml.j2
+    dest: /root/WebApp/docker-compose.yaml
+    mode: '0644'

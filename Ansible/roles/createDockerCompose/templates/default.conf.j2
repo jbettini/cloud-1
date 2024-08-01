@@ -1,7 +1,7 @@
 server {
     listen 80;
     listen [::]:80;
-    server_name cloud-one42.duckdns.org www.cloud-one42.duckdns.org;
+    server_name {{ domain }} www.{{ domain }};
 
     root /var/www/html;
     index index.php index.html index.htm;

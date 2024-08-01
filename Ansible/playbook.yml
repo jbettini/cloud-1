@@ -1,6 +1,7 @@
 - name: cloud1
-  hosts: vps
+  hosts: all
   remote_user: root
-  tasks:
-  - name: ipy
-  
+  roles:
+    - docker
+    - createDockerCompose
+    - launch
