@@ -18,8 +18,6 @@ services:
       - mariadb
     image: phpmyadmin:5.2.1-apache
     restart: unless-stopped
-    volumes:
-      - phpmyadmin:/var/www/html/phpmyadmin
     env_file:
       - ./env/php.env
     networks:
