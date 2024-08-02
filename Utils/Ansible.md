@@ -1,8 +1,8 @@
 Useful
 
-ssh root@51.158.107.187
-
 • Your site can restart automatically if the server is rebooted.
+• In case of reboot all the data of the site are persisted (images, user accounts, articles, ...).
+
 
 • It is possible to deploy your site on several servers in parallel.
 
@@ -10,9 +10,11 @@ ssh root@51.158.107.187
 • Public access to your server must be limited and secure (for example, it is not possible to connect directly to your database from the internet).
 
 
-• In case of reboot all the data of the site are persisted (images, user accounts, articles, ...).
 
 
+roles pour lancer en https uniquement + utiliser volumes
+
+Installer docker
 
 
 

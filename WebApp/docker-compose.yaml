@@ -50,7 +50,7 @@ services:
     volumes:
       - wordpress:/var/www/html
       - ./nginx-conf:/etc/nginx/conf.d
-      - certbot-etc:/etc/letsencrypt
+(     - ./letsencrypt:/etc/letsencrypt
     networks:
       - cloud1
 
@@ -61,7 +61,7 @@ services:
     image: certbot/certbot
     container_name: certbot
     volumes:
-      - certbot-etc:/etc/letsencrypt
+      - ./letsencrypt:/etc/letsencrypt
       - wordpress:/var/www/html
     command: certonly --webroot --webroot-path=/var/www/html --email jbettini@cloud-one42.duckdns.org --agree-tos --no-eff-email -d cloud-one42.duckdns.org -d www.cloud-one42.duckdns.org
     networks:

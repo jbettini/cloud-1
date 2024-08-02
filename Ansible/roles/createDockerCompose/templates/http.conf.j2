@@ -12,6 +12,7 @@ server {
     }
 
     location ~ /phpmyadmin {
+        rewrite ^/phpmyadmin(/.*)$ $1 break;
         proxy_pass http://phpmyadmin:80;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;

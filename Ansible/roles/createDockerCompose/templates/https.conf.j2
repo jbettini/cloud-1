@@ -17,8 +17,9 @@ server {
 }
 
 server {
-    listen 443 ssl http2;
-    listen [::]:443 ssl http2;
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    http2 on;
     server_name {{ domain }} www.{{ domain }};
 
     root /var/www/html;
@@ -36,7 +37,10 @@ server {
     }
 
     location ~ /phpmyadmin {
-        proxy_pass http://phpmyadmin:80;
+        # allow 62.129.8.171;
+        # deny all;
+        rewrite ^/phpmyadmin(/.*)$ $1 break;
+        proxy_pass http://phpmyadmin;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;

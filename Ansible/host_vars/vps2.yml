@@ -1,4 +1,4 @@
 var1: "Container"
-ansible_host: 51.158.112.111
+ansible_host: 51.158.107.187 
 ansible_user: root
-domain: cloudone42.duckdns.org
+domain: cloud1-42.duckdns.org

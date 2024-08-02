@@ -52,7 +52,7 @@ services:
     volumes:
       - wordpress:/var/www/html
       - ./nginx-conf:/etc/nginx/conf.d
-      - certbot-etc:/etc/letsencrypt
+      - ./letsencrypt:/etc/letsencrypt
     networks:
       - cloud1
 
@@ -63,7 +63,7 @@ services:
     image: certbot/certbot
     container_name: certbot
     volumes:
-      - certbot-etc:/etc/letsencrypt
+      - ./letsencrypt:/etc/letsencrypt
       - wordpress:/var/www/html
     command: certonly --webroot --webroot-path=/var/www/html --email jbettini@{{ domain }} --agree-tos --no-eff-email -d {{ domain }} -d www.{{ domain }}
     networks:
