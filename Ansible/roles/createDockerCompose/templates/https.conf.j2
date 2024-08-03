@@ -37,8 +37,8 @@ server {
     }
 
     location ~ /phpmyadmin {
-        # allow 62.129.8.171;
-        # deny all;
+        allow {{ host_ip }};
+        deny all;
         rewrite ^/phpmyadmin(/.*)$ $1 break;
         proxy_pass http://phpmyadmin;
         proxy_set_header Host $host;

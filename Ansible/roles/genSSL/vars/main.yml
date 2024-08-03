@@ -1,0 +1,5 @@
+---
+app_dir: /root/WebApp
+nginx_conf_dir: "{{ app_dir }}/nginx-conf"
+https_conf_file: "{{ app_dir }}/confs/https.conf"
+

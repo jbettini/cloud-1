@@ -1,0 +1,22 @@
+---
+# tasks file for roles/genSSL
+- name: Load HTTP conf
+  community.docker.docker_compose_v2:
+    project_src: "{{ app_dir }}"
+
+- name: Wait for SSL certificate to be generated
+  wait_for:
+    path: "{{ app_dir }}/letsencrypt/live/{{ domain }}/fullchain.pem"
+    state: present
+    timeout: 300
+
+- name: Ensure the SSL certificate was generated successfully
+  stat:
+    path: "{{ app_dir }}/letsencrypt/live/{{ domain }}/fullchain.pem"
+  register: cert_stat
+
+- name: Stop all services
+  community.docker.docker_compose_v2:
+    project_src: "{{ app_dir }}"
+    state: stopped
+  register: output

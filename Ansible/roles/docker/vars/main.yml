@@ -1,2 +1,8 @@
 ---
 # vars file for roles/docker
+link: https://download.docker.com/linux/ubuntu/dists/jammy/pool/stable
+arch_mapping:
+  x86_64: amd64
+  aarch64: arm64
+  armv7l: armhf
+  s390x: s390x

@@ -1,18 +1,203 @@
 ---
-- name: Install docker
-  apt:
-    name: docker
-    update_cache: yes
+- name: Update and upgrade all packages to the latest version
+  ansible.builtin.apt:
+    update_cache: true
+    upgrade: dist
     cache_valid_time: 3600
 
-- name: Install docker-compose
-  apt:
-    name: docker-compose-plugin
-    update_cache: yes
-    cache_valid_time: 3600
+- name: Install required packages
+  ansible.builtin.apt:
+    pkg:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg
+      - software-properties-common
 
-- name: Ensure Docker service is running and enabled
-  systemd:
+- name: Create directory for Docker's GPG key
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: '0755'
+
+- name: Add Docker's official GPG key
+  ansible.builtin.apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    keyring: /etc/apt/keyrings/docker.gpg
+    state: present
+
+- name: Print architecture variables
+  ansible.builtin.debug:
+    msg: "Architecture: {{ ansible_architecture }}, Codename: {{ ansible_lsb.codename }}"
+
+- name: Add Docker repository
+  ansible.builtin.apt_repository:
+    repo: >-
+      deb [arch={{ arch_mapping[ansible_architecture] | default(ansible_architecture) }}
+      signed-by=/etc/apt/keyrings/docker.gpg]
+      https://download.docker.com/linux/ubuntu {{ ansible_lsb.codename }} stable
+    filename: docker
+    state: present
+
+- name: Install Docker and related packages
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: true
+  loop:
+    - docker-ce
+    - docker-ce-cli
+    - containerd.io
+    - docker-buildx-plugin
+    - docker-compose-plugin
+
+- name: Add Docker group
+  ansible.builtin.group:
     name: docker
+    state: present
+
+- name: Add user to Docker group
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    groups: docker
+    append: true
+
+- name: Enable and start Docker services
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    enabled: true
     state: started
-    enabled: yes
+  loop:
+    - docker.service
+    - containerd.service
+
+# # roles/docker_installation/tasks/main.yml
+# # vars:
+# #   arch_mapping:  # Map ansible architecture {{ ansible_architecture }} names to Docker's architecture names
+# #     x86_64: amd64
+# #     aarch64: arm64
+
+# - name: Install docker packages
+#   apt:
+#     name: 
+#       - apt-transport-https
+#       - ca-certificates
+#       - curl
+#       - software-properties-common
+#     state: present
+#     update_cache: yes
+
+# - name: Add Docker s official GPG key
+#   apt_key:
+#     url: https://download.docker.com/linux/ubuntu/gpg
+#     state: present
+
+# - name: Verify that we have the key with the fingerprint
+#   apt_key:
+#     id: 0EBFCD88
+#     state: present
+
+# # - name: Get Architecture
+# #   set_fact:
+# #     target_arch: >-
+# #       {{ 'amd64' if ansible_architecture == 'x86_64' else
+# #          'arm64' if ansible_architecture == 'aarch64' else
+# #          'armhf' if ansible_architecture == 'armv7l' else
+# #          's390x' if ansible_architecture == 's390x' else
+# #          ansible_architecture }}
+
+# # - name: Set up the stable repository
+# #   apt_repository:
+# #     repo: 
+# #     - deb [arch=target_arch signed-by=/etc/apt/keyrings/docker.asc] {{ link }}/{{ target_arch }}/containerd.io_1.7.19-1_{{ target_arch }}.deb
+# #     state: present
+# #     update_cache: yes
+
+# - name: Print architecture variables
+#   ansible.builtin.debug:
+#     msg: "Architecture: {{ ansible_architecture }}, Codename: {{ ansible_lsb.codename }}"
+
+# - name: Add Docker repository
+#   ansible.builtin.apt_repository:
+#     repo: >-
+#       deb [arch={{ arch_mapping[ansible_architecture] | default(ansible_architecture) }}
+#       signed-by=/etc/apt/keyrings/docker.gpg]
+#       https://download.docker.com/linux/ubuntu {{ ansible_lsb.codename }} stable
+#     filename: docker
+#     state: present
+    
+# - name: Install Docker and related packages
+#   ansible.builtin.apt:
+#     name: "{{ item }}"
+#     state: present
+#     update_cache: true
+#   loop:
+#     - docker-ce
+#     - docker-ce-cli
+#     - containerd.io
+#     - docker-buildx-plugin
+#     - docker-compose-plugin
+#     # - deb [arch=target_arch signed-by=/etc/apt/keyrings/docker.asc] {{ link }}/{{ target_arch }}/docker-ce-cli_27.1.1-1~ubuntu.22.04~jammy_{{ target_arch }}.deb
+#     # - deb [arch=target_arch signed-by=/etc/apt/keyrings/docker.asc] {{ link }}/{{ target_arch }}/docker-ce-rootless-extras_27.1.1-1~ubuntu.22.04~jammy_{{ target_arch }}.deb
+#     # - deb [arch=target_arch signed-by=/etc/apt/keyrings/docker.asc] {{ link }}/{{ target_arch }}/docker-ce_27.1.1-1~ubuntu.22.04~jammy_{{ target_arch }}.deb
+#     # - deb [arch=target_arch signed-by=/etc/apt/keyrings/docker.asc] {{ link }}/{{ target_arch }}/docker-compose-plugin_2.6.0~ubuntu-jammy_{{ target_arch }}.deb
+#     # - deb [arch=target_arch signed-by=/etc/apt/keyrings/docker.asc] {{ link }}/{{ target_arch }}/docker-scan-plugin_0.23.0~ubuntu-jammy_{{ target_arch }}.deb
+
+# - name: Mettre à jour le cache APT
+#   ansible.builtin.apt:
+#     update_cache: yes
+
+# - name: Ensure Docker service is running and enabled
+#   systemd:
+#     name: docker
+#     state: started
+#     enabled: yes
+
+# - name: Update apt packages
+#   apt:
+#     update_cache: yes
+
+# # - name: Install docker
+# #   apt:
+#     name:
+#     - docker
+#     - docker-ce-cli 
+#     - containerd.io
+#     - docker-buildx-plugin
+#     - docker-compose-plugin
+#     state: present
+#     update_cache: yes
+
+# - name: Télécharger les fichiers .deb
+#   ansible.builtin.get_url:
+#     url: "{{ item }}"
+#     dest: "/tmp/{{ item | basename }}"
+#   loop:
+#     - "{{ link }}/{{ target_arch }}/containerd.io_1.7.19-1_{{ target_arch }}.deb"
+#     - "{{ link }}/{{ target_arch }}/docker-ce-cli_27.1.1-1~ubuntu.22.04~jammy_{{ target_arch }}.deb"
+#     - "{{ link }}/{{ target_arch }}/docker-ce-rootless-extras_27.1.1-1~ubuntu.22.04~jammy_{{ target_arch }}.deb"
+#     - "{{ link }}/{{ target_arch }}/docker-ce_27.1.1-1~ubuntu.22.04~jammy_{{ target_arch }}.deb"
+#     - "{{ link }}/{{ target_arch }}/docker-compose-plugin_2.6.0~ubuntu-jammy_{{ target_arch }}.deb"
+#     - "{{ link }}/{{ target_arch }}/docker-scan-plugin_0.23.0~ubuntu-jammy_{{ target_arch }}.deb"
+
+# - name: Installer les fichiers .deb
+#   ansible.builtin.apt:
+#     deb: "/tmp/{{ item | basename }}"
+#   loop:
+#     - "{{ link }}/{{ target_arch }}/containerd.io_1.7.19-1_{{ target_arch }}.deb"
+#     - "{{ link }}/{{ target_arch }}/docker-ce-cli_27.1.1-1~ubuntu.22.04~jammy_{{ target_arch }}.deb"
+#     - "{{ link }}/{{ target_arch }}/docker-ce-rootless-extras_27.1.1-1~ubuntu.22.04~jammy_{{ target_arch }}.deb"
+#     - "{{ link }}/{{ target_arch }}/docker-ce_27.1.1-1~ubuntu.22.04~jammy_{{ target_arch }}.deb"
+#     - "{{ link }}/{{ target_arch }}/docker-compose-plugin_2.6.0~ubuntu-jammy_{{ target_arch }}.deb"
+#     - "{{ link }}/{{ target_arch }}/docker-scan-plugin_0.23.0~ubuntu-jammy_{{ target_arch }}.deb"
+
+# - name: Install Docker packages
+#   ansible.builtin.apt:
+#     name:
+#       - containerd.io=1.7.19-1
+#       - docker-ce=5:27.1.1-1~ubuntu.22.04~jammy
+#       - docker-ce-cli=5:27.1.1-1~ubuntu.22.04~jammy
+#       - docker-ce-rootless-extras=5:27.1.1-1~ubuntu.22.04~jammy
+#       - docker-compose-plugin=2.6.0~ubuntu-jammy
+#       - docker-scan-plugin=0.23.0~ubuntu-jammy
+#     state: present

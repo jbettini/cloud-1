@@ -2,6 +2,9 @@
   hosts: all
   remote_user: root
   roles:
+    - docker
     - createDockerCompose
+    - genSSL
+    # # If u decide to use this role comment genSSL, and domain var must be cloud-three42 or cloud-five42
+    # - useExistingSsl
     - launch
-    # - docker
