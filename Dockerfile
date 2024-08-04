@@ -9,7 +9,8 @@ RUN apt-get update && apt-get install -y \
         net-tools \
         inetutils-ping \
         pipx \
-        tree
+        tree \
+        openssl
 
 ENV PATH="/root/.local/bin:${PATH}"
 
@@ -22,4 +23,6 @@ COPY .ssh/.gitconfig /root/.gitconfig
 
 WORKDIR /root/DataSource
 
-ENTRYPOINT ["fish"]
+# ENTRYPOINT ["fish"]
+
+ENTRYPOINT ["/bin/bash", "/root/DataSource/startup.sh"]

@@ -1,4 +1,4 @@
 ansible_host: 51.158.107.187 
 ansible_user: root
 domain: 
-# domain: cloud1-42.duckdns.org
+host_ip: 77.140.185.38

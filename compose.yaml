@@ -1,4 +1,10 @@
 services:
   cloud1:
     build: .
-    volumes: [.:/root/DataSource]
+    volumes: 
+      - .:/root/DataSource
+      - check-lock:/tmp
+    command: /path/to/your/startup_script.sh
+
+volumes:
+  check-lock:

@@ -1,5 +1,4 @@
 all:
   hosts:
     vps:
-    # vps2:
-    # vps3:
+    vps2:
