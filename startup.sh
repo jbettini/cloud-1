@@ -8,10 +8,6 @@ if [ -f "$lockfile" ]; then
     fish
 else
     touch "$lockfile"
-    if [ -d ".ssh/existingSsl" ]; then
-        cp -rf .ssh/existingSsl/* /root/DataSource/Ansible/roles/useExistingSsl/files/.
-    fi
-
     pma_user=$(openssl rand -base64 7 | tr -d '=')
     pma_pass=$(openssl rand -base64 7 | tr -d '=')
     root_pass=$(openssl rand -base64 7 | tr -d '=')

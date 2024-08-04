@@ -23,6 +23,4 @@ COPY .ssh/.gitconfig /root/.gitconfig
 
 WORKDIR /root/DataSource
 
-# ENTRYPOINT ["fish"]
-
 ENTRYPOINT ["/bin/bash", "/root/DataSource/startup.sh"]
