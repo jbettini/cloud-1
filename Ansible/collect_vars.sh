@@ -23,6 +23,7 @@ done
 read -p "Which address is agreed to connect to phpmyadmin? " agree_ip
 
 edit_inventory "$number_vps"
+mkdir -vp $ansible_dir/host_vars
 
 ansible_hostvars="$ansible_dir/host_vars"
 
