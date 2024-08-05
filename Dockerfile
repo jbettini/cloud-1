@@ -21,6 +21,6 @@ RUN pipx install --include-deps ansible && \
 COPY .ssh /root/.ssh/
 COPY .ssh/.gitconfig /root/.gitconfig
 
-WORKDIR /root/DataSource
+WORKDIR /root/DataSource/Ansible
 
 ENTRYPOINT ["/bin/bash", "/root/DataSource/startup.sh"]
